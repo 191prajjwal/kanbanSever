@@ -9,6 +9,7 @@ const app = express();
 //nested routes
 const authRoutes = require("./routes/authRoutes");
 const columnRoutes = require("./routes/columnRoutes");
+const taskRoutes = require("./routes/taskRoutes");
 
 // Middleware
 app.use(cors());
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/columns", columnRoutes);
+app.use("/api/tasks", taskRoutes);
 
 
 
