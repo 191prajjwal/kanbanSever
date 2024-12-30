@@ -5,6 +5,11 @@ exports.createTask = async (req, res) => {
   const { title, description, dueDate, priority, columnId, assignedTo } = req.body;
 
   try {
+    if (!title || !columnId) {
+      return res.status(400).json({ message: "Title and Column ID are required" });
+    }
+
+
     const task = await Task.create({
       title,
       description,
@@ -17,10 +22,10 @@ exports.createTask = async (req, res) => {
 
     res.status(201).json(task);
   } catch (error) {
-    res.status(500).json({ message: "Error creating task", error });
+    console.error("Error creating task:", error); // Log the actual error to the console
+    res.status(500).json({ message: "Error creating task", error: error.message });
   }
 };
-
 
 exports.updateTask = async (req, res) => {
   const { title, description, dueDate, priority, columnId, assignedTo } = req.body;
@@ -35,6 +40,7 @@ exports.updateTask = async (req, res) => {
     if (!task) return res.status(404).json({ message: "Task not found" });
     res.status(200).json(task);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ message: "Error updating task", error });
   }
 };
