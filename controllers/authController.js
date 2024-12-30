@@ -1,7 +1,6 @@
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
-
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -18,7 +17,6 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
@@ -33,5 +31,15 @@ exports.loginUser = async (req, res) => {
     res.status(200).json({ token, user: { id: user._id, name: user.name, email } });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+// New Function to Fetch All Users
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({}, "_id email"); // Fetch only `_id` and `email`
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch users" });
   }
 };
