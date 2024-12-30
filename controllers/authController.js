@@ -34,12 +34,33 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// New Function to Fetch All Users
+
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({}, "_id email"); // Fetch only `_id` and `email`
+    const users = await User.find({}, "_id email"); 
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch users" });
+  }
+};
+
+
+exports.getUserEmail = async (req, res) => {
+  const { userId } = req.params;  
+  
+  try {
+    const user = await User.findById(userId, "email");  
+    
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    
+    res.status(200).json({ email: user.email });
+    
+  } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+    res.status(500).json({ message: "Server error" });
   }
 };
